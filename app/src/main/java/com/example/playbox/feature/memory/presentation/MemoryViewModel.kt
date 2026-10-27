@@ -3,8 +3,7 @@ package com.example.playbox.feature.memory.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playbox.feature.memory.domain.model.MemoryGame
-import com.example.playbox.feature.memory.domain.repository.MemoryRecordRepository
-import com.example.playbox.feature.memory.domain.usecase.SaveMemoryRecord
+import com.example.playbox.feature.memory.domain.usecase.*
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,21 +11,26 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 data class MemoryUiState(
-    val game: MemoryGame = MemoryGame.newGame(),
+    val game: MemoryGame,
     val bestAttempts: Int? = null,
     val error: String? = null,
     val saving: Boolean = false,
 )
 
-class MemoryViewModel(repository: MemoryRecordRepository) : ViewModel() {
-    private val saveRecord = SaveMemoryRecord(repository)
-    private val _state = MutableStateFlow(MemoryUiState())
+class MemoryViewModel(
+    private val observeRecord: ObserveMemoryRecord,
+    private val saveRecord: SaveMemoryRecord,
+    private val startGame: StartMemoryGame,
+    private val revealCard: RevealMemoryCard,
+    private val concealCards: ConcealMemoryCards,
+) : ViewModel() {
+    private val _state = MutableStateFlow(MemoryUiState(game = startGame()))
     val state = _state.asStateFlow()
 
     init {
         viewModelScope.launch {
             try {
-                repository.observeBestAttempts().collect { best ->
+                observeRecord().collect { best ->
                     _state.update { it.copy(bestAttempts = best) }
                 }
             } catch (error: Exception) {
@@ -38,13 +42,13 @@ class MemoryViewModel(repository: MemoryRecordRepository) : ViewModel() {
 
     fun reveal(index: Int) {
         val previous = _state.value.game
-        val next = previous.reveal(index)
+        val next = revealCard(previous, index)
         _state.update { it.copy(game = next) }
         if (next.isFinished && !previous.isFinished) persistResult()
     }
 
-    fun conceal() { _state.update { it.copy(game = it.game.conceal()) } }
-    fun restart() { if (!_state.value.saving) _state.update { it.copy(game = MemoryGame.newGame(), error = null) } }
+    fun conceal() { _state.update { it.copy(game = concealCards(it.game)) } }
+    fun restart() { if (!_state.value.saving) _state.update { it.copy(game = startGame(), error = null) } }
 
     fun persistResult() {
         val state = _state.value
@@ -52,7 +56,7 @@ class MemoryViewModel(repository: MemoryRecordRepository) : ViewModel() {
         _state.update { it.copy(saving = true, error = null) }
         viewModelScope.launch {
             try {
-                saveRecord(state.game.attempts)
+                saveRecord(state.game)
             } catch (error: Exception) {
                 if (error is CancellationException) throw error
                 _state.update { it.copy(error = "No se ha podido guardar tu récord. Puedes reintentarlo.") }

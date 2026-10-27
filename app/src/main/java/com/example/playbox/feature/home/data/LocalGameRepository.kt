@@ -1,10 +1,10 @@
 package com.example.playbox.feature.home.data
 
 import com.example.playbox.core.domain.model.GameDefinition
-import com.example.playbox.feature.home.domain.repository.GameCatalog
+import com.example.playbox.feature.home.domain.repository.GameRepository
 
-class LocalGameCatalog : GameCatalog {
-    override fun games() = listOf(
+class LocalGameRepository : GameRepository {
+    override fun getGames() = listOf(
         GameDefinition("memory", "Memoria", "Encuentra las cuatro parejas en el menor número de intentos."),
     )
 }

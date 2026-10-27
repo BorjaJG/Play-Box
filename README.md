@@ -2,7 +2,7 @@
 
 Proyecto personal de juegos para mostrar diseño, programación y aprendizaje mediante experiencias pequeñas y terminadas.
 
-**Estado actual:** base Android con Jetpack Compose, MVVM por funcionalidades, Room 3 y un juego de memoria de cuatro parejas con récord persistente. **macOS es un objetivo futuro**, todavía sin implementación. El proyecto aún no es una aplicación de juegos terminada.
+**Estado actual:** base Android con Jetpack Compose, MVVM por funcionalidades, casos de uso, repositorios, Koin y Room 3 y un juego de memoria de cuatro parejas con récord persistente. **macOS es un objetivo futuro**, todavía sin implementación. El proyecto aún no es una aplicación de juegos terminada.
 
 ## Desarrollo
 

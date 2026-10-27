@@ -1,6 +1,7 @@
 package com.example.playbox.feature.memory.presentation
 
 import com.example.playbox.feature.memory.domain.repository.MemoryRecordRepository
+import com.example.playbox.feature.memory.domain.usecase.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,7 +32,7 @@ class MemoryViewModelTest {
     }
     @Test fun completionSavesOnceAndObservesRecord() = runTest(dispatcher) {
         val records = Records()
-        val vm = MemoryViewModel(records)
+        val vm = MemoryViewModel(ObserveMemoryRecord(records), SaveMemoryRecord(records), StartMemoryGame(), RevealMemoryCard(), ConcealMemoryCards())
         runCurrent()
         finish(vm)
         vm.reveal(0)
@@ -42,7 +43,7 @@ class MemoryViewModelTest {
     }
     @Test fun failedSaveCanBeRetriedWithoutLosingFinishedGame() = runTest(dispatcher) {
         val records = Records(fail = true)
-        val vm = MemoryViewModel(records)
+        val vm = MemoryViewModel(ObserveMemoryRecord(records), SaveMemoryRecord(records), StartMemoryGame(), RevealMemoryCard(), ConcealMemoryCards())
         runCurrent()
         finish(vm)
         runCurrent()

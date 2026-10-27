@@ -1,8 +1,16 @@
 package com.example.playbox
 
 import android.app.Application
-import com.example.playbox.app.di.AppContainer
+import com.example.playbox.app.di.appModules
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
 class PlayBoxApplication : Application() {
-    val container by lazy { AppContainer(this) }
+    override fun onCreate() {
+        super.onCreate()
+        startKoin {
+            androidContext(this@PlayBoxApplication)
+            modules(appModules)
+        }
+    }
 }
