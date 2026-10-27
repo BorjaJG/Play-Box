@@ -1,0 +1,44 @@
+# Android Studio y archivos de este equipo
+.idea/
+*.iml
+local.properties
+.DS_Store
+Thumbs.db
+
+# Gradle y compilación
+.gradle/
+.kotlin/
+**/build/
+.externalNativeBuild/
+.cxx/
+captures/
+*.apk
+*.aab
+*.apks
+*.hprof
+*.log
+
+# Credenciales y firma (usar GitHub Secrets cuando hagan falta)
+.env
+.env.*
+!.env.example
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.pem
+*.key
+key.properties
+keystore.properties
+secrets.properties
+
+# Documentos privados, borradores y exportaciones locales
+/private/
+/docs/private/
+/local-notes/
+/exports/
+*.tmp
+*.bak
+~$*
+
+# Se versionan README, docs públicos, código y Gradle Wrapper.

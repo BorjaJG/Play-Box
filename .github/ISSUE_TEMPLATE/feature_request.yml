@@ -1,0 +1,34 @@
+name: Funcionalidad
+description: Proponer una mejora pequeña y comprobable
+title: "[Feature] "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema o necesidad
+      description: ¿A quién ayuda y qué necesita hacer?
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Propuesta y alcance
+      description: Incluir qué queda fuera de esta tarea.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Criterios de aceptación
+      description: Resultados observables para dar la tarea por terminada.
+      placeholder: "- [ ] ..."
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Plataforma
+      options:
+        - Android
+        - macOS (planificación futura)
+        - Compartido o por decidir

@@ -1,0 +1,17 @@
+name: Tarea técnica o documentación
+description: Mantenimiento, investigación, documentación o CI
+title: "[Task] "
+body:
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objetivo y contexto
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Criterios de aceptación y comprobación
+      placeholder: "- [ ] ..."
+    validations:
+      required: true
