@@ -14,7 +14,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.playbox.core.di.AppContainer
+import com.example.playbox.app.di.AppContainer
 import com.example.playbox.feature.home.presentation.HomeScreen
 import com.example.playbox.feature.home.presentation.HomeViewModel
 import com.example.playbox.feature.memory.presentation.MemoryScreen

@@ -1,4 +1,4 @@
-package com.example.playbox.core.data.database
+package com.example.playbox.app.data.database
 
 import androidx.room3.Database
 import androidx.room3.RoomDatabase

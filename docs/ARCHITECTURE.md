@@ -10,20 +10,19 @@ flowchart TD
     UC --> PORT[Domain: interfaz de repositorio]
     DATA[Data: implementación del repositorio] -. implementa .-> PORT
     DATA --> DAO[Data del juego: DAO y Entity]
-    DAO --> DB[Core: Room 3 y SQLite]
-    DI[Core DI: AppContainer] --> VM
+    DAO --> DB[App: esquema Room 3 y SQLite]
+    DI[App DI: AppContainer] --> VM
     DI --> DATA
 ```
 
 ## Carpetas
 
 ```text
-app/                           # Composición y navegación de pantallas
+app/                           # Composición, navegación, esquema global y DI
 core/
-  data/database/               # Una conexión y esquema global Room
+  data/database/               # Factory genérica Room + SQLite
   domain/model/                # Metadatos compartidos del catálogo
   presentation/theme/          # Tema Compose compartido
-  di/                          # Construcción e inyección manual de dependencias
 feature/
   home/
     data/                      # Catálogo local
@@ -40,7 +39,7 @@ feature/
 
 `domain` no importa Android, Compose, Room ni implementaciones de `data`. La UI recoge el estado con ciclo de vida y envía acciones al ViewModel. El ViewModel sobrevive a cambios de configuración; la partida activa no se restaura tras muerte del proceso. Los récords sí persisten en SQLite. No se añaden clases base MVVM genéricas sin una necesidad real.
 
-La aplicación crea una base de datos para su vida completa. Las entidades y consultas pertenecen a cada juego; `core/data/database` reúne el esquema. El guardado del récord usa un UPSERT con MIN para no perder el mejor resultado con escrituras concurrentes. No se habilita migración destructiva. Los esquemas JSON se versionan en `app/schemas/`; cambios futuros requieren subir versión y definir migración.
+La aplicación crea una base de datos para su vida completa. Las entidades y consultas pertenecen a cada juego; `app/data/database` reúne el esquema y `app/di` conecta los juegos. `core` no importa ninguna funcionalidad. El guardado del récord usa un UPSERT con MIN para no perder el mejor resultado con escrituras concurrentes. No se habilita migración destructiva. Los esquemas JSON se versionan en `app/schemas/`; cambios futuros requieren subir versión y definir migración.
 
 ## Tecnología elegida
 
