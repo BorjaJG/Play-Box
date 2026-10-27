@@ -9,3 +9,12 @@
 - No incluir claves, rutas locales, builds ni documentos privados. Seguir `docs/REPOSITORY_HYGIENE.md`.
 - Actualizar la documentación cuando cambie el comportamiento o estado real de una plataforma.
 - No publicar en tiendas, firmar releases ni cambiar permisos del repositorio como parte de cambios rutinarios.
+
+## Arquitectura
+
+- Seguir `docs/ARCHITECTURE.md`: `core` para infraestructura/tema/metadatos compartidos, `feature/<juego>/{data,domain,presentation}` para lo específico.
+- `domain` debe ser Kotlin puro, sin imports de Android, Compose, Room ni implementaciones de `data`.
+- Compose representa `UiState`; el ViewModel procesa acciones y publica `StateFlow`. Recoger flujos con ciclo de vida.
+- Persistencia con Room 3 y SQLite Bundled. Versionar `app/schemas` y definir migraciones al cambiar el esquema.
+- Las entidades/DAO viven junto a su juego; la base compartida reúne el esquema.
+- Conservar la inyección por constructor; no introducir clases base o capas genéricas vacías.

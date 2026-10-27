@@ -1,0 +1,62 @@
+# Arquitectura de Play Box
+
+MVVM con flujo unidireccional y organización por funcionalidad dentro del módulo `app`.
+
+```mermaid
+flowchart TD
+    UI[Compose: Screen] -->|acciones| VM[ViewModel]
+    VM -->|StateFlow de UiState| UI
+    VM --> UC[Domain: casos de uso y reglas]
+    UC --> PORT[Domain: interfaz de repositorio]
+    DATA[Data: implementación del repositorio] -. implementa .-> PORT
+    DATA --> DAO[Data del juego: DAO y Entity]
+    DAO --> DB[Core: Room 3 y SQLite]
+    DI[Core DI: AppContainer] --> VM
+    DI --> DATA
+```
+
+## Carpetas
+
+```text
+app/                           # Composición y navegación de pantallas
+core/
+  data/database/               # Una conexión y esquema global Room
+  domain/model/                # Metadatos compartidos del catálogo
+  presentation/theme/          # Tema Compose compartido
+  di/                          # Construcción e inyección manual de dependencias
+feature/
+  home/
+    data/                      # Catálogo local
+    domain/repository/         # Contrato del catálogo
+    presentation/              # HomeViewModel, UiState y HomeScreen
+  memory/
+    data/local/                # Entity y DAO propios de Memoria
+    data/repository/           # Implementación Room
+    domain/model/              # Reglas puras del juego
+    domain/repository/         # Contrato de persistencia
+    domain/usecase/            # Guardar récord válido
+    presentation/              # ViewModel, UiState y pantalla Compose
+```
+
+`domain` no importa Android, Compose, Room ni implementaciones de `data`. La UI recoge el estado con ciclo de vida y envía acciones al ViewModel. El ViewModel sobrevive a cambios de configuración; la partida activa no se restaura tras muerte del proceso. Los récords sí persisten en SQLite. No se añaden clases base MVVM genéricas sin una necesidad real.
+
+La aplicación crea una base de datos para su vida completa. Las entidades y consultas pertenecen a cada juego; `core/data/database` reúne el esquema. El guardado del récord usa un UPSERT con MIN para no perder el mejor resultado con escrituras concurrentes. No se habilita migración destructiva. Los esquemas JSON se versionan en `app/schemas/`; cambios futuros requieren subir versión y definir migración.
+
+## Tecnología elegida
+
+- Jetpack Compose y Material 3 para la interfaz.
+- ViewModel, StateFlow y coroutines para estado y trabajo asíncrono.
+- Room 3.0.3 estable, KSP y SQLite Bundled para persistencia local tipada con consultas comprobadas al compilar.
+- Inyección por constructor y `AppContainer`: dependencias explícitas y repositorios sustituibles en tests.
+
+[Room 3](https://developer.android.com/jetpack/androidx/releases/room3) tiene soporte multiplataforma. [SQLite Bundled](https://developer.android.com/kotlin/multiplatform/room) permite consistencia entre plataformas. Esta elección facilita una futura extracción a Kotlin Multiplatform, **pero este código sigue siendo Android**: no existe aún un target macOS, source sets compartidos ni una app de escritorio.
+
+## Añadir un juego
+
+1. Crear `feature/nombre/{data,domain,presentation}`; empezar por reglas y tests en `domain`.
+2. Añadir entidades y DAO solo si necesita persistencia; registrarlos en la base compartida y planificar migración.
+3. Implementar el repositorio definido en `domain` e inyectarlo desde `AppContainer`.
+4. Exponer `UiState` inmutable y acciones en ViewModel; dibujar estado en Compose.
+5. Registrar metadatos en el catálogo y destino en `PlayBoxApp`.
+
+Se usan paquetes, no módulos Gradle por capa. Cuando crezca el proyecto, se podrán extraer módulos para que las fronteras de dependencias sean también verificadas por Gradle.

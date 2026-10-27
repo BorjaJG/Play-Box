@@ -3,18 +3,19 @@
 ## 1. Base del proyecto
 
 - [ ] Confirmar compilación, tests y lint en GitHub Actions.
-- [ ] Elegir el primer juego y definir sus reglas y criterio de finalización.
-- [ ] Sustituir la pantalla de ejemplo por una experiencia pequeña y usable.
+- [x] Elegir Memoria como primer ejemplo: cuatro parejas y récord por menor número de intentos.
+- [x] Sustituir la pantalla XML por inicio y Memoria en Compose con MVVM y Room 3.
 
 ## 2. Escaparate Android
 
-- [ ] Completar una mecánica de principio a fin: inicio, partida, resultado y reinicio.
+- [x] Implementar inicio, partida, resultado y reinicio en Memoria.
+- [ ] Verificar la experiencia y persistencia en dispositivo/emulador.
 - [ ] Probar estados, tamaños de pantalla y accesibilidad básica.
 - [ ] Documentar decisiones y grabar una demo real.
 
 ## 3. Explorar macOS
 
-- [ ] Definir si el destino es una app de escritorio nativa o una experiencia compartida.
+- [ ] Extraer a Kotlin Multiplatform lo que se comparta; la app actual sigue siendo Android.
 - [ ] Comparar las alternativas a partir del código y necesidades reales.
 - [ ] Documentar una decisión antes de migrar arquitectura.
 - [ ] Crear un prototipo ejecutable en Mac y añadir CI cuando exista ese destino.

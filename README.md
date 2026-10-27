@@ -2,7 +2,7 @@
 
 Proyecto personal de juegos para mostrar diseño, programación y aprendizaje mediante experiencias pequeñas y terminadas.
 
-**Estado actual:** proyecto Android inicial (pantalla de ejemplo). **macOS es un objetivo futuro**, todavía sin implementación. El proyecto aún no es una aplicación de juegos terminada.
+**Estado actual:** base Android con Jetpack Compose, MVVM por funcionalidades, Room 3 y un juego de memoria de cuatro parejas con récord persistente. **macOS es un objetivo futuro**, todavía sin implementación. El proyecto aún no es una aplicación de juegos terminada.
 
 ## Desarrollo
 
@@ -12,7 +12,9 @@ Abrir el proyecto en Android Studio y configurar el SDK local. El proyecto usa e
 ./gradlew :app:assembleDebug :app:testDebugUnitTest :app:lintDebug
 ```
 
-Los tests que existen inicialmente son los de ejemplo de Android Studio; no equivalen a cobertura de las futuras mecánicas.
+Los tests unitarios comprueban reglas del juego y el caso de uso de récords. La prueba instrumentada de la base de datos requiere dispositivo o emulador.
+
+[Arquitectura y diagrama de capas](docs/ARCHITECTURE.md)
 
 ## Flujo de trabajo
 
@@ -39,7 +41,7 @@ flowchart TD
 
 | Plataforma | Estado |
 | --- | --- |
-| Android | Proyecto inicial existente |
+| Android | Compose + MVVM + Memoria y récord local |
 | macOS | Planificado; arquitectura por decidir |
 
 La CI actual valida Android en Linux. No genera una app para macOS ni publica en tiendas.

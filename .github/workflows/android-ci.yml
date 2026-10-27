@@ -36,7 +36,7 @@ jobs:
         with:
           packages: 'platform-tools platforms;android-37.0 build-tools;36.0.0'
       - name: Build, unit tests and Android Lint
-        run: bash ./gradlew :app:assembleDebug :app:testDebugUnitTest :app:lintDebug --stacktrace
+        run: bash ./gradlew :app:assembleDebug :app:testDebugUnitTest :app:lintDebug :app:assembleDebugAndroidTest --stacktrace
       - name: Upload test and lint reports
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
