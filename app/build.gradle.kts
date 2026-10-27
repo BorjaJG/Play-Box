@@ -7,13 +7,13 @@ plugins {
 
 android {
     namespace = "com.example.playbox"
-    compileSdk { version = release(37) }
+    compileSdk { version = release(libs.versions.compileSdk.get().toInt()) }
     defaultConfig {
         applicationId = "com.example.playbox"
-        minSdk = 24
-        targetSdk = 37
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
+        versionCode = libs.versions.appVersionCode.get().toInt()
+        versionName = libs.versions.appVersionName.get()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildFeatures { compose = true }

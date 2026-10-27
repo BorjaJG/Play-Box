@@ -14,7 +14,7 @@ Abrir el proyecto en Android Studio y configurar el SDK local. El proyecto usa e
 
 Los tests unitarios comprueban reglas del juego y el caso de uso de récords. La prueba instrumentada de la base de datos requiere dispositivo o emulador.
 
-[Arquitectura y diagrama de capas](docs/ARCHITECTURE.md)
+[Arquitectura y diagrama de capas](docs/ARCHITECTURE.md) · [Versiones y mantenimiento](docs/VERSIONS.md)
 
 ## Flujo de trabajo
 
